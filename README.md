@@ -84,6 +84,20 @@ Tested on Windows 11, DataHub OSS `v1.5.0.6`, CLI `1.6.0.16`, `uv` `0.11.32`. Pr
 
 Anything misbehaving: `uv run python setup/doctor.py` checks the whole environment with a fix per failure. Deeper troubleshooting: [`demo/README.md`](demo/README.md).
 
+## Install as a plugin
+
+This repo also doubles as a Claude Code plugin marketplace, so any project can get the
+skill, hook, and MCP server without cloning the repo:
+
+```
+/plugin marketplace add ravadashreyas/Lore
+/plugin install lore
+```
+
+You get the `datahub-learnings` skill, the `enforce_recall.py` PreToolUse hook, and the
+`datahub` MCP server, wired into whichever project you run it from. Details, prerequisites,
+and a note on running it inside this repo itself: [`plugins/lore/README.md`](plugins/lore/README.md).
+
 ## Run the demo
 
 Full walkthrough in [`demo/README.md`](demo/README.md), including the record of a complete end-to-end rehearsal:
@@ -130,6 +144,12 @@ skill/datahub-learnings/      reference implementation, the candidate upstream P
   SKILL.md                    operational workflow: setup, recall, retain, worked examples
   references/                 condensed protocol reference + empirically-verified MCP tool calls
   templates/                  JSON learning-record shape, markdown doc-block shape
+
+.claude-plugin/                repo-root marketplace manifest, so `/plugin marketplace add` finds lore
+  marketplace.json
+
+plugins/lore/                  installable Claude Code plugin: bundles the skill, hook, and MCP config
+  README.md                    what installing gets you, prerequisites, double-loading note, uninstall
 
 setup/                        one-shot, idempotent setup scripts
   seed_warehouse.py           deterministic demo data + 3 planted landmines + LTV feature view

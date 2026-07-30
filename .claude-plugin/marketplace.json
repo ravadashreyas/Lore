@@ -1,0 +1,17 @@
+{
+  "name": "lore",
+  "description": "Marketplace for the Lore plugin: tribal knowledge for AI agents, stored in DataHub.",
+  "owner": {
+    "name": "Shreyas Ravada",
+    "url": "https://github.com/ravadashreyas"
+  },
+  "plugins": [
+    {
+      "name": "lore",
+      "source": "./plugins/lore",
+      "description": "Tribal knowledge for AI agents, stored in DataHub: recall before acting, retain after, enforced by a hook.",
+      "version": "0.1.0",
+      "license": "Apache-2.0"
+    }
+  ]
+}
