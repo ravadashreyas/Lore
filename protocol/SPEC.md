@@ -190,8 +190,7 @@ unit. Modeling each field as its own `MULTIPLE`-cardinality property (`kind[]`,
 `claim[]`, `evidence[]`, `confidence[]`, ...) would require every reader and writer to
 reconstruct a record by matching array indices (or an embedded id) across several
 independently-mutable properties — one partial write, one out-of-order update, and the
-arrays silently desync with no error. That is exactly the fragile, hard-to-review state
-CLAUDE.md's write-less-code rules warn against. Packing one whole learning into a
+arrays silently desync with no error. Packing one whole learning into a
 single JSON string value, and using the property's native `MULTIPLE` cardinality to
 hold "list of learnings," keeps every record atomic: one list entry is one complete,
 self-consistent learning; an append is a single-value insert; an update or removal
@@ -407,7 +406,6 @@ explicitly; the protocol has no automated resolution.
   claims may occasionally both get written.
 - **No learning-kind extensibility.** The five kinds in §3 are fixed for v1. Adding a
   new kind requires a protocol version bump, not a per-deployment config option.
-  (Consistent with CLAUDE.md's rule against speculative extensibility.)
 - **No per-learning access control.** Learnings inherit whatever read/write permissions
   DataHub already enforces on the subject entity; the protocol defines no separate
   visibility or redaction layer.

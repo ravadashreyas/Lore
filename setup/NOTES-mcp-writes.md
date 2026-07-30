@@ -1,6 +1,6 @@
 # MCP / SDK Write-Path Verification — Findings
 
-Recorded 2026-07-29. Answers PLAN.md §8's #1 open risk: can SPEC.md §5 (structured
+Recorded 2026-07-29. Answers the build's #1 open risk: can SPEC.md §5 (structured
 properties + documentation writes) be implemented against the local DataHub OSS
 v1.5.0.6 quickstart? Every claim below was run against the live local GMS
 (`http://localhost:8080`), not inferred from docs.
@@ -18,8 +18,8 @@ the SDK and the official MCP server. The two modifications:
    A stale `uv` package-index cache resolved bare `uvx mcp-server-datahub` to `0.4.0`
    in this environment, which has no mutation tools at all (not gated, not present in
    the code). `uvx mcp-server-datahub@latest` (or `--refresh`) resolved `0.6.0`, which
-   has them. PLAN.md §8's "v0.5.0+" note is the right threshold; verify pinning at
-   demo time, don't trust a bare `uvx` invocation.
+   has them. Mutation support arrived around v0.5.0, so `>=0.6.0` is a safe pin;
+   verify pinning at demo time, don't trust a bare `uvx` invocation.
 
 The one thing SPEC.md §5.1 flagged as unverified — MULTIPLE-cardinality `string`
 property on both `dataset` and `schemaField` — registers and writes cleanly. No
@@ -152,7 +152,7 @@ over stdio via `session.call_tool(...)`):
   merging — confirming the skill must do its own read-modify-write around this tool,
   same as the SDK path).
 
-## Recommended write path for the skill (vs. PLAN.md §8's SDK-fallback question)
+## Recommended write path for the skill (MCP vs. SDK-fallback question)
 
 **Use the MCP server as the primary write path; no SDK fallback is needed for
 mutation.** Both structured-property and documentation writes work through it against
@@ -176,8 +176,7 @@ plugs. Requirements for the skill/runtime to get this right:
 **SDK stays in play for exactly one thing:** one-time structured-property
 *definition* registration (`setup/register_properties.py`), since no MCP tool
 registers property definitions — only assigns values to properties that already
-exist. This matches PLAN.md's setup-tooling vs. skill split already in §2/§6; no
-change to PLAN.md is needed.
+exist. This matches the repo's setup-tooling vs. skill split; no change needed.
 
 ## Cleanup
 

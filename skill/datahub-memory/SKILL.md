@@ -137,7 +137,7 @@ Never delete or edit the disputed record's `claim`/`evidence`/`confidence` — t
 
 ## Worked Examples
 
-Both drawn from this repo's demo scenario (`PLAN.md` §5): a seeded e-commerce warehouse with three planted landmines in `fct_orders` — `amount` is in cents, cancelled/refunded orders are included, and `dim_customers.customer_id` is 47% NULL (use `customer_key`). Ground truth: naive June 2026 revenue = 4,668,271,415 ("$4.67B"); correct (`status='completed'`, ÷100) = $38,604,332.17.
+Both drawn from this repo's demo scenario (`demo/README.md`): a seeded e-commerce warehouse with three planted landmines in `fct_orders` — `amount` is in cents, cancelled/refunded orders are included, and `dim_customers.customer_id` is 47% NULL (use `customer_key`). Ground truth: naive June 2026 revenue = 4,668,271,415 ("$4.67B"); correct (`status='completed'`, ÷100) = $38,604,332.17.
 
 ### Example A — Retain, after Agent A answers "what was revenue last month?"
 

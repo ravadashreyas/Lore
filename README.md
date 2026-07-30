@@ -155,8 +155,7 @@ examples/                     real captured output, no run required to inspect i
   doc-block-fct_orders.md     the rendered documentation block, read back byte-for-byte
   conflict-*.md / *.json      the section-8 conflict procedure, executed via a real migration
 
-protocol/, skill/, setup/, demo/, examples/ are all referenced above; CLAUDE.md and PLAN.md
-(repo root) are the internal working docs — project rules and build plan, not judge-facing.
+protocol/, skill/, setup/, demo/, examples/, clients/ are all referenced above.
 ```
 
 ## The demo scenario is constructed

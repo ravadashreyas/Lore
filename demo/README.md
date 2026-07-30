@@ -1,8 +1,9 @@
 # Demo harness — Agent A / Agent B / Agent C scenario
 
 Everything needed to run the video's demo live, or to reproduce it for a retake:
-Act 1 (Agent A, no memory) and Act 2 (Agent B, recall from a single dataset) per
-`PLAN.md` §5, plus Act 3 (Agent C, lineage-aware recall through an upstream hop).
+Act 1 (Agent A, no memory), Act 2 (Agent B, recall from a single dataset), and
+Act 3 (Agent C, lineage-aware recall through an upstream hop) — the scenario is
+described in the root `README.md` ("The demo scenario is constructed").
 See `protocol/SPEC.md` for the mechanism it's demonstrating.
 
 ## Prerequisites

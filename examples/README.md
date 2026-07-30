@@ -40,7 +40,7 @@ same one a live Claude Code session uses. Not a different code path than the vid
 These learnings are live on the real `fct_orders` dataset and its `amount` column in
 the local DataHub instance right now — open `http://localhost:8080` and search
 `fct_orders` to see them in the UI, or run `demo/reset_demo.py` to confirm the reset
-path removes them cleanly (it does; see `WORKLOG.md`) before re-running the demo.
+path removes them cleanly (verified during the build) before re-running the demo.
 
 ## Conflict-handling example (`dim_customers`)
 
@@ -72,7 +72,7 @@ environment was restored. Nothing here is hand-authored or simulated:
 5. **Captured both artifacts** in this directory via a fresh GraphQL readback of `dim_customers` — the JSON and Markdown files above are that readback, not a transcription.
 6. **Restored the environment.** Re-ran `uv run python setup/seed_warehouse.py` (deterministic fixed-seed reseed) — confirmed the NULL ratio was back to `0.47` and `fct_orders`' ground-truth numbers (500 orders, naive June 2026 revenue `4,668,271,415` cents, completed-only revenue `$38,604,332.17`) were unchanged. Then cleared **only** `dim_customers`' structured-property values (`add_structured_properties` with an empty list) and stripped **only** its doc block, scoped to that one urn — the full `demo/reset_demo.py` sweep was deliberately not run, because another agent was concurrently reading `fct_orders`' learnings during this work and `fct_orders` (and `features_customer_ltv`) had to stay untouched. Verified after cleanup: `dim_customers` has 0 learnings and an empty description; `fct_orders` still has its original 2 dataset-level learnings, its 1 `amount`-column learning, and its doc block, byte-for-byte unchanged throughout.
 
-**Honesty note (per `CLAUDE.md`):** the conflict shown in these two files is **not**
+**Honesty note:** the conflict shown in these two files is **not**
 sitting live in the DataHub instance right now — it was real when captured, and the
 instance was deliberately returned to a clean state afterward so the demo scenario
 stays re-runnable. These files are a snapshot of a real, fully-executed run of the

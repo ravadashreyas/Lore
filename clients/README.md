@@ -1,8 +1,8 @@
 # clients/recall.py
 
 A standalone, stdlib-only Python recall client for the Agent Memory on DataHub
-protocol, built from **`protocol/SPEC.md` alone** (plus `CLAUDE.md` for code style).
-No other file in this repo was read to write it.
+protocol, built from **`protocol/SPEC.md` alone**. No other file in this repo was
+read to write it.
 
 ## What this proves
 
