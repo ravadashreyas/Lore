@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "datahub": {
+      "command": "uvx",
+      "args": ["mcp-server-datahub@latest"],
+      "env": {
+        "DATAHUB_GMS_URL": "http://localhost:8080",
+        "TOOLS_IS_MUTATION_ENABLED": "true"
+      }
+    }
+  }
+}
