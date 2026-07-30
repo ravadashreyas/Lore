@@ -179,17 +179,17 @@ def check_learnings_parseable(gms_url: str):
 def check_mcp_server():
     try:
         result = subprocess.run(
-            ["uvx", "mcp-server-datahub@latest", "--help"],
+            ["uvx", "mcp-server-datahub@0.6.0", "--help"],
             capture_output=True, text=True, timeout=60,
         )
     except FileNotFoundError:
         fix = "install uv (https://docs.astral.sh/uv/) -- see Windows gotchas in NOTES-datahub-quickstart.md"
         return False, f"uvx not found on PATH. Fix: {fix}."
     except subprocess.TimeoutExpired:
-        return False, "`uvx mcp-server-datahub@latest --help` timed out after 60s."
+        return False, "`uvx mcp-server-datahub@0.6.0 --help` timed out after 60s."
     if result.returncode != 0:
         return False, (
-            f"`uvx mcp-server-datahub@latest --help` exited {result.returncode}: "
+            f"`uvx mcp-server-datahub@0.6.0 --help` exited {result.returncode}: "
             f"{result.stderr.strip()[-300:]}"
         )
     return True, (

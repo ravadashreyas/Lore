@@ -33,7 +33,7 @@ Run `uv run python setup/doctor.py` any time to check all of the below in one sh
    `$env:LOCALAPPDATA\Microsoft\WinGet\Packages\astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe\`
    if `uvx` isn't found.
 6. **Claude Code opened at the repo root**, so it picks up `.mcp.json` (the `datahub`
-   MCP server: `uvx mcp-server-datahub@latest`, `TOOLS_IS_MUTATION_ENABLED=true`)
+   MCP server: `uvx mcp-server-datahub@0.6.0`, `TOOLS_IS_MUTATION_ENABLED=true`)
    automatically. No manual MCP setup needed per session.
 7. **`lore-permissions.json` present at the repo root** (committed, so it is unless
    you deleted it). It makes all four demo tables read-only to agents, which Act 4
@@ -155,9 +155,9 @@ like any other state.
   `add_structured_properties`/`update_description`.** The MCP server resolved a stale
   cached build with no mutation tools, or `TOOLS_IS_MUTATION_ENABLED` didn't reach it.
   Confirm `.mcp.json` has `"TOOLS_IS_MUTATION_ENABLED": "true"` in `env` and the args
-  are `["mcp-server-datahub@latest"]` (the `@latest` pin, not a bare `uvx
-  mcp-server-datahub`, a bare invocation can resolve a stale `0.4.0` from `uv`'s
-  package cache with no mutation tools at all). Fully quit and reopen the Claude Code
+  are `["mcp-server-datahub@0.6.0"]` (the exact verified version — not a bare `uvx
+  mcp-server-datahub`, which can resolve a stale `0.4.0` from `uv`'s package cache
+  with no mutation tools at all). Fully quit and reopen the Claude Code
   session after editing `.mcp.json`: it's read at session start, not hot-reloaded.
 - **Agent B doesn't seem to recall anything.** Check `demo/reset_demo.py` wasn't run
   between Agent A and Agent B (it wipes what Agent A just wrote). Also confirm

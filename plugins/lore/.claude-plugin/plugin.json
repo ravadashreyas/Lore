@@ -1,7 +1,7 @@
 {
   "name": "lore",
   "displayName": "Lore",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Tribal knowledge for AI agents, stored in DataHub: recall before acting, retain after, enforced by a hook.",
   "author": {
     "name": "Shreyas Ravada",

@@ -47,7 +47,7 @@ Recalled learnings are free text written by a *previous agent*, re-injected into
 
 ## Setup (once per environment)
 
-1. **DataHub MCP server**: `mcp-server-datahub@latest` (resolves to `>=0.6.0`, bare `uvx mcp-server-datahub` can resolve a stale cached `0.4.0` with no mutation tools at all; always pin or `--refresh`), launched with `TOOLS_IS_MUTATION_ENABLED=true` (mutation tools, including `add_structured_properties` and `update_description`, are unregistered by default).
+1. **DataHub MCP server**: `mcp-server-datahub@0.6.0` (the exact verified version; bare `uvx mcp-server-datahub` can resolve a stale cached `0.4.0` with no mutation tools at all; always pin), launched with `TOOLS_IS_MUTATION_ENABLED=true` (mutation tools, including `add_structured_properties` and `update_description`, are unregistered by default).
 2. **Structured property definition**: `io.datahub.agentMemory.learnings` must already be registered (string, `MULTIPLE` cardinality, `entityTypes: [dataset, schemaField]`). One-time step, not part of this skill's runtime: register the property once per DataHub instance; script at https://github.com/ravadashreyas/Lore/blob/main/setup/register_properties.py, run if `search` or `get_entities` shows the property as unknown.
 3. No auth token is required against a local OSS quickstart (`DATAHUB_GMS_URL=http://localhost:8080`); GMS accepts unauthenticated requests from both the SDK and the MCP server in that configuration.
 

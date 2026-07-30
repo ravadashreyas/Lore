@@ -62,7 +62,7 @@ Every claim checked against a live DataHub OSS `v1.5.0.6` quickstart. Full write
 | `string`/`MULTIPLE` structured property on `dataset` and `schemaField` entities | Verified: byte-identical round-trips, no truncation up to 10,000 chars |
 | Writes **replace** the whole value list (no append) | Verified, including the data-loss case; read-merge-write is mandatory |
 | Doc-block marker splice is idempotent | Verified: splice-twice leaves exactly one block |
-| MCP mutation tools work against OSS | Verified on server `>= 0.6.0` with `TOOLS_IS_MUTATION_ENABLED=true`; an unpinned `uvx` can resolve a stale build with no mutation tools |
+| MCP mutation tools work against OSS | Verified on server `>= 0.6.0` with `TOOLS_IS_MUTATION_ENABLED=true`; an unpinned `uvx` can resolve a stale build with no mutation tools — the repo pins `mcp-server-datahub@0.6.0` exactly |
 | schemaField structured-property **writes** via MCP | Verified (the high-level Python SDK cannot; the MCP tool can) |
 | schemaField structured-property **reads** via MCP | **Not available** in server 0.6.0: writes succeed, no tool reads them back. Raw-GraphQL workaround documented in the [skill's tool reference](skill/datahub-learnings/references/mcp-tools-reference.md); candidate upstream fix |
 

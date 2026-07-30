@@ -28,6 +28,6 @@ Most of the time this skill runs implicitly: recall before the first query again
 
 ## Requires
 
-- DataHub MCP server `mcp-server-datahub@latest` (`>=0.6.0`), launched with `TOOLS_IS_MUTATION_ENABLED=true`.
+- DataHub MCP server `mcp-server-datahub@0.6.0` (pinned to the verified version), launched with `TOOLS_IS_MUTATION_ENABLED=true`.
 - The `io.datahub.agentMemory.learnings` structured property registered once per DataHub instance (script: https://github.com/ravadashreyas/Lore/blob/main/setup/register_properties.py).
 - Full protocol definition: https://github.com/ravadashreyas/Lore/blob/main/protocol/SPEC.md.

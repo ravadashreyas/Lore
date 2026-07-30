@@ -17,7 +17,8 @@ implementation so any project can install it with two commands.
   `lore-permissions.json` in your project root (no file = off; start from
   `hooks/permissions.example.json`), while recall/retain of the learnings themselves is
   always allowed.
-- **MCP server** (`.mcp.json`): `mcp-server-datahub@latest`, configured with
+- **MCP server** (`.mcp.json`): `mcp-server-datahub@0.6.0` (pinned to the version every
+  claim in the Lore repo was verified against), configured with
   `TOOLS_IS_MUTATION_ENABLED=true` so the skill can write learnings back, not just read
   them.
 
