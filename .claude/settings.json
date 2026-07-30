@@ -8,6 +8,11 @@
             "type": "command",
             "command": "uv run python hooks/enforce_recall.py",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "uv run python hooks/enforce_permissions.py",
+            "timeout": 30
           }
         ]
       }

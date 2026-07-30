@@ -1,4 +1,14 @@
-# hooks/ -- enforced recall
+# hooks/ -- enforced recall + data permissions
+
+Two independent `PreToolUse` hooks on `Bash`:
+
+- `enforce_recall.py` -- blocks a command touching a cataloged table once per session
+  until its unsurfaced learnings have been shown (first section below).
+- `enforce_permissions.py` -- grants an agent read/update/write per table and per
+  column of the actual data, while the learnings layer (the sticky notes) stays
+  accessible no matter what (second section).
+
+## Enforced recall
 
 `protocol/SPEC.md` SS9 admits a hole: "The protocol defines what recall must do when
 performed (SS6), but does not -- and in v1 cannot -- technically force an agent to
@@ -112,3 +122,73 @@ message. Every other outcome is `sys.exit(0)`.
   the same table name, it passes (the marker was written before the block was raised),
   but this hook has no way to confirm the agent actually *applied* the learnings --
   only that it saw them.
+
+## Data permissions (`enforce_permissions.py`)
+
+Recall governs what an agent *knows* before touching data; this hook governs what it
+may *do* to the data. The design mirrors the protocol's core asymmetry: an agent's
+access to row data is a policy decision that varies by agent and task, but its access
+to the learnings layer never is. An agent locked out of a table can still read its
+sticky notes (recall) and still write new ones (retain) -- being denied a query is
+itself often worth retaining.
+
+### Toggling permissions
+
+The toggle is a JSON file: `lore-permissions.json` in the project root (or wherever
+`LORE_PERMS_FILE` points). **No file = the feature is off** and every command passes.
+Copy [`permissions.example.json`](permissions.example.json) there and edit to enable:
+
+```json
+{
+  "default": ["read", "update", "write"],
+  "tables": {
+    "fct_orders": { "allow": ["read"] },
+    "dim_customers": {
+      "allow": ["read"],
+      "columns": { "name": [] }
+    }
+  }
+}
+```
+
+- `default` -- operations allowed on any cataloged table not listed under `tables`.
+- `tables.<name>.allow` -- operations allowed on that table's data.
+- `tables.<name>.columns.<column>` -- override for one column; `[]` means no access
+  at all. Columns not listed inherit the table's `allow`.
+
+The three operations, judged from SQL verbs appearing as whole words in the command:
+
+| Operation | Verbs that require it |
+|---|---|
+| `read` | anything that mentions the table with no mutating verb (`SELECT`, `psql`, a DB-API call...) |
+| `update` | `UPDATE` |
+| `write` | `INSERT`, `DELETE`, `DROP`, `TRUNCATE`, `ALTER`, `CREATE`, `COPY`, `MERGE`, `GRANT`, `REVOKE` |
+
+### The sticky-notes exemption
+
+Commands aimed at the metadata layer are never blocked, whatever the config says:
+anything containing `agentMemory`, `structuredProperty`, or `/api/graphql` (the
+GraphQL fallback path for recall/retain). MCP structured-property tools aren't `Bash`
+calls at all, so they never pass through this hook either. Every denial message
+reminds the agent of this: if it learned something before being blocked, it can and
+should still retain it.
+
+### Denial semantics
+
+Unlike recall's block-once pattern, a denial here is deterministic: the same command
+is blocked with exit 2 every time until the config changes. One deliberate exception
+to the repo's fail-open stance: a **malformed** `lore-permissions.json` fails
+*closed* (every command blocked with a fix-it message) -- an access-control file the
+operator wrote deliberately must never degrade silently to allow-everything. A
+*missing* file, an unreachable DataHub (config-listed tables are still enforced;
+only `default` coverage of unlisted cataloged tables needs the catalog), or any
+unexpected error still fail open, same as the recall hook.
+
+### Honest limits
+
+Same word-boundary matching as the recall hook, same tradeoffs: it matches table and
+column names anywhere in the command string, so a command mentioning a locked column
+name in a comment or filename is also denied (false positives are friction, not
+data loss), and it is a guardrail against agent mistakes, not a security boundary
+against an adversarial agent -- real row-level security belongs in the database's
+own GRANTs.

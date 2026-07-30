@@ -115,9 +115,11 @@ Full walkthrough in [`demo/README.md`](demo/README.md), including the record of 
 
 [`examples/`](examples/) holds real captured outputs (learnings, doc blocks, and a fully-executed conflict procedure) for judges who run nothing.
 
-## Enforced recall (the hook)
+## Enforced recall and data permissions (the hooks)
 
-SPEC.md §9 admits recall can't be technically forced. [`hooks/enforce_recall.py`](hooks/enforce_recall.py) closes that gap for Claude Code: a `PreToolUse` hook blocks a Bash command touching a cataloged table once per session, feeds the unsurfaced learnings back as the block reason, and lets the retry through. Fail-open by design. Details: [`hooks/README.md`](hooks/README.md).
+SPEC.md §9 admits recall can't be technically forced. [`hooks/enforce_recall.py`](hooks/enforce_recall.py) closes that gap for Claude Code: a `PreToolUse` hook blocks a Bash command touching a cataloged table once per session, feeds the unsurfaced learnings back as the block reason, and lets the retry through. Fail-open by design.
+
+[`hooks/enforce_permissions.py`](hooks/enforce_permissions.py) adds the complementary control: toggle what an agent may do to the *data* — `read` / `update` / `write`, per table and per column — by editing a `lore-permissions.json` (no file = off; start from [`hooks/permissions.example.json`](hooks/permissions.example.json)). The learnings layer is deliberately exempt: whatever the data grants say, an agent can always recall the sticky notes and retain new ones — being denied access is often exactly the moment it has something worth writing down. Details on both hooks: [`hooks/README.md`](hooks/README.md).
 
 ## Governance of the memory itself
 
@@ -174,8 +176,10 @@ demo/                         the three-act scenario, runnable end-to-end
 clients/                      independent implementation, written from the spec alone
   recall.py                   stdlib-only recall client: proves SPEC.md's interoperability claim
 
-hooks/                        closes SPEC.md §9's "no enforced recall" gap for Claude Code
+hooks/                        Claude Code enforcement layer: recall + data permissions
   enforce_recall.py           PreToolUse hook: blocks Bash once with unsurfaced learnings, then allows the retry
+  enforce_permissions.py      PreToolUse hook: per-table/per-column read/update/write grants on the data;
+  permissions.example.json    the learnings layer is always exempt (sticky notes stay readable/writable)
 
 tools/                        governance tooling for the memory itself
   lint_learnings.py           pass/fail linter: validates every learning against SPEC.md's rules, CI-ready

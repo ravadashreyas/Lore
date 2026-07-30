@@ -9,6 +9,12 @@
             "command": "python",
             "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/enforce_recall.py"],
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "python",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/enforce_permissions.py"],
+            "timeout": 30
           }
         ]
       }

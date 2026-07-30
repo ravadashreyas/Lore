@@ -1,0 +1,14 @@
+{
+  "default": ["read", "update", "write"],
+  "tables": {
+    "fct_orders": {
+      "allow": ["read"]
+    },
+    "dim_customers": {
+      "allow": ["read"],
+      "columns": {
+        "name": []
+      }
+    }
+  }
+}
