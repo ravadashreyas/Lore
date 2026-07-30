@@ -131,6 +131,20 @@ interactive MCP path loads only in a fresh Claude Code session). Outcomes:
   Act 3's output (a 290-character claim, over the spec's 280 cap). The claim was
   trimmed via read-merge-write and the catalog re-linted clean: 7 learnings, 0
   violations.
+- **Act 4 (Agent D, fresh session, 2026-07-30, after the permissions layer went
+  live)**: asked to hard-delete cancelled/refunded rows. Recall surfaced all 4
+  existing `fct_orders` learnings; the agent then checked the downstream
+  `features_customer_ltv` view, saw it filters `status = 'completed'` in its own
+  definition, and **refused the deletion on its own judgment — the permissions
+  hook never had to fire** (the "refusal" ending in `prompts/agent_d.md`; the
+  denial mechanics are separately verified). It recommended the filter pattern,
+  ran only read queries (warehouse intact: 404/72/24 rows by status), and
+  retained a new `caveat` on `fct_orders` via a clean read-merge-write (4 values,
+  none clobbered). The governance loop then caught its **second** organic
+  violation: the new claim (366 chars) and evidence (515 chars) both exceeded the
+  spec caps; the same agent remediated in place (same id, claim trimmed to 256,
+  evidence to 291, other 3 records byte-identical) and the catalog re-linted
+  clean: **8 learnings, 0 violations**.
 
 Run `demo/reset_demo.py` before a fresh take; the rehearsal's learnings are wiped
 like any other state.

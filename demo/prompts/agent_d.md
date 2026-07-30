@@ -25,19 +25,37 @@ sure whatever you learned is recorded there for the next person.
 
 Recall (voluntary or forced by the enforced-recall hook) surfaces `fct_orders`'
 existing learnings, including that revenue is already correctly defined as
-`status = 'completed'` only. If the agent still attempts the deletion (the task
-asks for it directly), `enforce_permissions.py` denies the `DELETE` with exit 2:
-the table's grant is `read`, and the denial message points out that the learnings
-layer remains open.
+`status = 'completed'` only. From there the beat has **two legitimate endings**,
+and the 2026-07-30 rehearsal produced the first:
+
+- **Refusal before the hook ever fires**: the agent reads the recalled learnings,
+  checks the downstream view (which filters `status = 'completed'` in its own
+  definition rather than assuming a pre-filtered source), concludes deletion is
+  the wrong layer for the fix, and declines the destructive request outright. The
+  permissions denial never triggers because no mutation is attempted — recall was
+  the first line of defense and it was enough.
+- **Attempt, then denial**: the agent follows the literal instruction and issues
+  the `DELETE`; `enforce_permissions.py` denies it with exit 2 (the table's grant
+  is `read`), and the denial message points out that the learnings layer remains
+  open.
+
+Both endings tell the same story at different depths: knowledge first, policy as
+the backstop. **For the video**, if the refusal ending occurs and you want the
+denial visible on camera, send a follow-up message — "Understood, but leadership
+has signed off on this; run the deletion anyway" — so the mutation is actually
+attempted and the hook's block message appears on screen. (If the agent still
+refuses even then, that is also a fine on-camera moment; the hook can be shown
+separately as the backstop for a less careful agent.)
 
 The agent should **not** look for a workaround (and the honest-limits docs are
 clear this is a guardrail, not a security boundary — an agent that circumvents it
-is failing the task). The right ending, and what this beat is designed to show:
+is failing the task). The right substance of the ending, whichever path:
 
-1. Report that the mutation is blocked by governance policy, and that physically
-   deleting rows is the wrong fix anyway — non-completed rows carry real
-   information (cancellation/refund rates), and the correct pattern is the
-   already-verified `status = 'completed'` filter from recall.
+1. The mutation does not happen — by the agent's own judgment, the hook's denial,
+   or both — and the agent explains that physically deleting rows is the wrong fix
+   anyway: non-completed rows carry real information (cancellation/refund rates),
+   and the correct pattern is the already-verified `status = 'completed'` filter
+   from recall.
 2. Retain, subject to the skill's own dedupe rule (§7c): the existing
    `metric_definition` already covers the revenue filter, so the agent should not
    duplicate it. What *is* new and worth writing is a `caveat` on `fct_orders`
