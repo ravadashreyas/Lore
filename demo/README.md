@@ -17,9 +17,9 @@ Run `uv run python setup/doctor.py` any time to check all of the below in one sh
 2. **Demo Postgres warehouse running**: `docker compose -f demo/docker-compose.yml up -d`
    → `dhmem-demo-postgres` on host port **5434**
    (`postgresql://demo:demo@localhost:5434/demo_warehouse`).
-3. **The 4 demo datasets ingested into DataHub.** If `http://localhost:8080` doesn't
-   show `fct_orders`, `dim_customers`, `dim_products`, `features_customer_ltv` under
-   platform `postgres`, run the ingestion recipe (`setup/ingest_postgres.yml`). See
+3. **The 4 demo datasets ingested into DataHub.** If the UI at `http://localhost:9002`
+   doesn't show `fct_orders`, `dim_customers`, `dim_products`, `features_customer_ltv`
+   under platform `postgres`, run the ingestion recipe (`setup/ingest_postgres.yml`). See
    `setup/NOTES-datahub-quickstart.md` §Ingestion for the exact command.
    `features_customer_ltv` is a real SQL view (`setup/seed_warehouse.py`) over
    `fct_orders` + `dim_customers`; the postgres source's SQL-parsed view lineage
@@ -66,7 +66,7 @@ copy is simpler for judges to reason about.
    table, query Postgres directly, get a suspiciously large naive number, investigate,
    land on the correct $38.6M figure, then invoke the datahub-memory skill's retain
    workflow to write 3 learnings back to `fct_orders`.
-3. **Show DataHub UI**: open `http://localhost:8080` (or `:9002` for the full UI),
+3. **Show DataHub UI**: open `http://localhost:9002` (login `datahub`/`datahub`),
    navigate to `fct_orders`, show the `io.datahub.agentMemory.learnings` structured
    property values and the rendered `## Agent learnings` block now sitting in the
    dataset's Documentation tab.
@@ -99,8 +99,8 @@ copy is simpler for judges to reason about.
   session after editing `.mcp.json`: it's read at session start, not hot-reloaded.
 - **Agent B doesn't seem to recall anything.** Check `demo/reset_demo.py` wasn't run
   between Agent A and Agent B (it wipes what Agent A just wrote). Also confirm
-  Agent A's session actually completed its retain step: check
-  `http://localhost:8080` for `fct_orders`'s structured property values directly.
+  Agent A's session actually completed its retain step: check `fct_orders` in the UI
+  at `http://localhost:9002` for its structured property values directly.
 - **Agent C doesn't inherit `fct_orders`'s learnings.** Same root cause as the Agent B
   case (reset ran too late, or Agent A never retained) plus one more: confirm
   `features_customer_ltv` actually shows `fct_orders` as 1-hop upstream in the DataHub
