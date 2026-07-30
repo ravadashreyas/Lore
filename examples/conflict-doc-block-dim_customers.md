@@ -15,6 +15,13 @@ and doc block cleared) -- see examples/README.md for full provenance.
 Produced by demo-seed/conflict-example on 2026-07-29. Everything below this
 comment is exactly what a viewer saw rendered as the dataset's description in
 the DataHub UI at capture time.
+
+Errata (capture kept verbatim): the CONFLICT heading below says "supersedes id
+...", wording chosen by the renderer before the spec pinned the phrasing. The
+protocol now requires "contradicts id ..." (SPEC.md S5.2 rule 5) because a
+conflict does not resolve or replace the disputed record -- neither side is
+preferred until a human retires one. The capture is preserved as-is rather than
+edited, since it is a byte-for-byte readback.
 -->
 
 <!-- agent-memory:begin -->

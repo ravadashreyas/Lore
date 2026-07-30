@@ -255,7 +255,10 @@ Rules for the block:
 3. Entries are ordered by `learned_at` descending, ties broken by `kind` alphabetical.
 4. One `###` heading per learning: `` `kind` — `field-or-"table"` (confidence: level) ``.
 5. Learnings with `status: disputed` or `status: conflict` MUST be rendered with the
-   status made visible, e.g. `(confidence: medium, DISPUTED — see id ...)`, per §8.
+   status made visible: `(confidence: <level>, DISPUTED — see id <conflict-id>)` and
+   `(confidence: <level>, CONFLICT — contradicts id <disputed-id>)` respectively.
+   Renderers MUST NOT use language implying resolution (e.g. "supersedes",
+   "replaces") — per §8, an unresolved conflict prefers neither side.
 6. Because the block is fully regenerated from the structured property on every write,
    the documentation block is idempotent by construction: writing the same learning
    set twice produces byte-identical block content.

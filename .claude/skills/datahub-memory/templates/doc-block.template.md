@@ -18,8 +18,16 @@ _Distilled by agents via the agent-memory protocol. Machine-generated — do not
 **Claim:** <claim text — unchanged even though disputed>
 **Evidence:** <evidence text — unchanged even though disputed>
 **Learned by** `<agent-name>/<session-id>` on <YYYY-MM-DD> — id `<uuid>`
+
+### `<kind>` — `<field-name-or-"table">` (confidence: <level>, CONFLICT — contradicts id <disputed-id>)
+**Claim:** <claim stating the contradiction plainly>
+**Evidence:** <evidence text>
+**Learned by** `<agent-name>/<session-id>` on <YYYY-MM-DD> — id `<uuid>`
 <!-- agent-memory:end -->
 ```
+
+Conflict headings say "contradicts", never "supersedes" or "replaces" — an unresolved
+conflict prefers neither side (SPEC.md §8).
 
 ## Splice logic (apply every write, not just the first)
 

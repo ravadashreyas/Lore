@@ -49,7 +49,7 @@ path removes them cleanly (it does; see `WORKLOG.md`) before re-running the demo
   procedure (`skill/datahub-memory/SKILL.md` Conflict Procedure): the original
   `join_path` record (now `status: disputed`, `claim`/`evidence`/`confidence`
   untouched, exactly as §8 rule 1 requires) and the new `join_path` record that
-  supersedes it (`status: conflict`, `conflicts_with` pointing at the disputed
+  contradicts it (`status: conflict`, `conflicts_with` pointing at the disputed
   record's `id`). Both `learnings` (parsed) and `raw_wire_values` (the exact
   single-line JSON strings DataHub stores) are included.
 - **`conflict-doc-block-dim_customers.md`** — `dim_customers`' `editableProperties.description`
