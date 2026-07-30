@@ -22,7 +22,7 @@ flowchart LR
     FO -->|"MCP: get_entities,<br/>get_lineage"| B1
 ```
 
-Measured on a 12-arm eval: **62% fewer queries with memory**, single-query correct answers on metric-definition questions, and one honest failure, reported in full. Details in [`eval/RESULTS.md`](eval/RESULTS.md).
+Measured on a 12-arm eval: **62% fewer queries with memory**, single-query correct answers on metric-definition questions, and one honest failure, reported in full — then retained as a learning itself, so the mistake that caused it is now surfaced to every future agent before it can recur (see the epilogue). Details in [`eval/RESULTS.md`](eval/RESULTS.md).
 
 ## How it works
 

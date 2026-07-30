@@ -65,6 +65,17 @@ curiosity, hits it again. The failure is an argument for more memory, not less;
 what it honestly tempers is any claim that recalled knowledge substitutes for
 data profiling on questions the memory does not cover.
 
+**Epilogue (2026-07-30): the loop was closed.** The discovery was retained into
+live DataHub as a `caveat` on `dim_customers.name` (id `2a6aaee4-40c7-4a18-aa32-1d3c43c8176f`,
+confidence `high`), after a fresh SQL reverification that showed the trap is
+bigger than q5 revealed: not one homonym pair but **14 of 85 distinct names
+shared across 29 of 100 customers**. The evidence field is aggregate-only (no
+names or keys, per SPEC §7a, even on synthetic data). Verified end to end: a
+simulated fresh session issuing the exact name-grouped query shape that failed
+q5 is now blocked by the enforced-recall hook before execution, with this caveat
+as the block reason. The failing arm's mistake is no longer reachable by any
+agent this tooling covers.
+
 ## Threats to validity, observed in practice
 
 - **The landmines were more discoverable than intended.** Condition A agents
