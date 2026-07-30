@@ -13,11 +13,11 @@ Recorded 2026-07-29. Factual notes only: versions, ports, auth, commands that wo
 
 ```
 # uv was installed via winget but not on PATH in this shell session; used full path:
-UV=/c/Users/Shreyas/AppData/Local/Microsoft/WinGet/Packages/astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe/uv.exe
+UV=/c/Users/<you>/AppData/Local/Microsoft/WinGet/Packages/astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe/uv.exe
 "$UV" tool install acryl-datahub
-# -> installs `datahub` to C:\Users\Shreyas\.local\bin\datahub.exe
+# -> installs `datahub` to %USERPROFILE%\.local\bin\datahub.exe
 
-export PATH="/c/Users/Shreyas/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 datahub version
 datahub docker quickstart
 ```
@@ -62,7 +62,7 @@ Pre-existing, unrelated containers on this machine (left untouched, not part of 
 
 ## Windows-specific quirks hit and fixes
 
-1. **`uv` not on PATH right after winget install.** Fixed by calling the full path: `C:\Users\Shreyas\AppData\Local\Microsoft\WinGet\Packages\astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe\uv.exe`. `uv tool install` places the `datahub` shim at `C:\Users\Shreyas\.local\bin\datahub.exe`; add that to PATH for future sessions rather than the WinGet package dir.
+1. **`uv` not on PATH right after winget install.** Fixed by calling the full path: `%LOCALAPPDATA%\Microsoft\WinGet\Packages\astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe\uv.exe`. `uv tool install` places the `datahub` shim at `%USERPROFILE%\.local\bin\datahub.exe`; add that to PATH for future sessions rather than the WinGet package dir.
 2. **`datahub docker quickstart` exits with code 1 / prints a Python traceback on Windows even on full success.** Root cause: the CLI's final success banner does `click.secho("\u2714 DataHub is now running", fg="green")`, and the Windows console's default codepage (`cp1252`) can't encode the `✔` (U+2714) character, raising `UnicodeEncodeError` in `click`'s echo. This happens *after* all containers are already confirmed healthy in the compose output. It is a cosmetic failure in the final print statement, not an infrastructure failure. **Verify success by checking `docker ps` / hitting the health endpoints, not by trusting the CLI's own exit code on Windows.** Workaround for a clean exit: run with `PYTHONIOENCODING=utf-8` set, or `chcp 65001` in the shell before invoking `datahub`, to let the console accept UTF-8 output.
 
 ## Commands to bring it back up / tear down (not run as part of this task)

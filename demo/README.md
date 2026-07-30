@@ -34,6 +34,12 @@ Run `uv run python setup/doctor.py` any time to check all of the below in one sh
 6. **Claude Code opened at the repo root**, so it picks up `.mcp.json` (the `datahub`
    MCP server: `uvx mcp-server-datahub@latest`, `TOOLS_IS_MUTATION_ENABLED=true`)
    automatically. No manual MCP setup needed per session.
+7. **Approve the project's hooks and MCP server when Claude Code asks.** Both are
+   defined by this repo (`.claude/settings.json`, `.mcp.json`) and Claude Code
+   requires a one-time per-project approval before running them. If the enforced-recall
+   hook never fires or the `datahub` MCP tools never appear, the approval prompt is
+   the first thing to check. Verified empirically: in a session without the approval,
+   the hook silently never executes (fail-open at the harness level, by design).
 
 ## How the skill gets loaded
 

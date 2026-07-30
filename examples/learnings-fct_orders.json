@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Read-back proof of the io.datahub.agentMemory.learnings structured property values written to the real fct_orders dataset urn and its amount schemaField urn, produced by executing the retain workflow (skill/datahub-memory/SKILL.md Workflow 2, Steps 3-4) exactly as specified: read-merge-write against a confirmed-empty starting state, one add_structured_properties call per entity, full value list each time.",
-    "produced_by": "demo-seed/wave4 (orchestrator agent, seeding this repo's examples/ deliverable, not one of the video's Agent A / Agent B personas)",
+    "produced_by": "demo-seed/wave4 (scripted seed run, producing this repo's examples/ deliverable, not one of the video's Agent A / Agent B personas)",
     "produced_at": "2026-07-29",
     "method": "DataHub MCP server (uvx mcp-server-datahub@latest, TOOLS_IS_MUTATION_ENABLED=true) called over stdio: add_structured_properties for each write, then raw GraphQL (entity { structuredProperties { properties { values } } }) for the readback shown below -- the same tool surface skill/datahub-memory/references/mcp-tools-reference.md documents.",
     "each_value_below": "Shown parsed for readability. On the wire each is a single-line JSON string (json.dumps(..., separators=(',', ':'))) -- that raw string form is what DataHub actually stores as one structured-property value."
