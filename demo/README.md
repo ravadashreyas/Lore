@@ -87,6 +87,34 @@ copy is simpler for judges to reason about.
 `doc-block-fct_orders.md`) for judges who don't run the demo themselves. See
 `examples/README.md`.
 
+## Rehearsal record (2026-07-30)
+
+The full three-act scenario was executed end to end by fresh agent sessions before
+any video was recorded, using the skill's documented GraphQL fallback (the
+interactive MCP path loads only in a fresh Claude Code session). Outcomes:
+
+- **Act 1 (Agent A, empty memory)**: naive June sum read as $4.67B, investigated,
+  found the cents and completed-only landmines, answered $38,604,332.17 (correct),
+  retained 3 learnings. 8 SQL queries.
+- **Act 2 (Agent B, fresh session)**: recalled first; its **first analysis query**
+  already applied the cents conversion and completed-only filter. Correct
+  product-line breakdown summing exactly to the verified total. 2 SQL queries
+  (vs Agent A's 8). Unprompted, it retained a 4th learning (the breakdown query)
+  with a correct read-merge-write: nothing was lost.
+- **Act 3 (Agent C, fresh session)**: recall walked 1 lineage hop upstream from
+  `features_customer_ltv` and inherited `fct_orders`' learnings; verified the view
+  honors them (100/100 rows recomputed identical). It then independently
+  discovered the `customer_id` 47%-NULL join trap and an unplanted finding (3
+  cold-start customers with NULL first/last-order dates that could break feature
+  pipelines), and retained both.
+- **Governance loop, live**: `tools/lint_learnings.py` caught a real violation in
+  Act 3's output (a 290-character claim, over the spec's 280 cap). The claim was
+  trimmed via read-merge-write and the catalog re-linted clean: 7 learnings, 0
+  violations.
+
+Run `demo/reset_demo.py` before a fresh take; the rehearsal's learnings are wiped
+like any other state.
+
 ## Troubleshooting
 
 - **Agent's MCP tool calls fail with "mutation tools not available" or it can't find
