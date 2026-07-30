@@ -165,7 +165,10 @@ v1 defines a single structured property:
 ```
 
 Each value in the property's value list is one learning, serialized as a single-line
-JSON object with exactly the fields in §4 (omitting absent optional fields).
+JSON object with exactly the fields in §4 (omitting absent optional fields). When the
+property is referenced through DataHub's APIs, its full urn follows the standard
+convention `urn:li:structuredProperty:<qualifiedName>`, i.e.
+`urn:li:structuredProperty:io.datahub.agentMemory.learnings`.
 
 **Write semantics (critical).** DataHub's structured-property write replaces the
 property's *entire* value list — it does not append (verified against OSS v1.5.0.6:
@@ -282,7 +285,16 @@ dataset urns, but no MCP tool returns them for schemaField urns, even though wri
 to schemaField urns succeed. Column-scoped recall therefore currently requires a raw
 GraphQL query (`... on SchemaFieldEntity { structuredProperties { ... } }`) — see the
 skill's tool reference for the exact query. This is a read-path gap in the MCP server,
-not in DataHub's storage; it is a candidate upstream contribution.*
+not in DataHub's storage; it is a candidate upstream contribution. A useful shortcut:
+a dataset's field-level properties are reachable in the same query as the dataset's
+own, via `schemaMetadata { fields { schemaFieldEntity { structuredProperties } } }`.*
+
+*Implementation note (non-normative) on bounding the upstream hop: DataHub's lineage
+search (`searchAcrossLineage` with `direction: UPSTREAM`) traverses multiple hops by
+default. Each result carries a `degree` field; implementers MUST filter to
+`degree == 1` (or use an equivalent max-hop input) to honor this section's one-hop
+default. Both facts were confirmed against OSS v1.5.0.6 by an implementation written
+from this spec alone.*
 
 **Applying confidence.**
 
