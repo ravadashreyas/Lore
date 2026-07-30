@@ -3,7 +3,7 @@
 `protocol/SPEC.md` SS9 admits a hole: "The protocol defines what recall must do when
 performed (SS6), but does not -- and in v1 cannot -- technically force an agent to
 perform it before acting. Compliance is a property of the skill/agent implementation,
-not of DataHub itself." An agent that skips the `datahub-memory` skill's recall step
+not of DataHub itself." An agent that skips the `datahub-learnings` skill's recall step
 (forgets, gets distracted mid-task, or is a different agent entirely that never loaded
 the skill) queries a landmine table with zero friction and re-derives -- or silently
 gets wrong -- exactly what a prior agent already paid to learn.

@@ -8,7 +8,7 @@ time so judges can inspect the output without running the demo themselves.
 
 ## Files
 
-- **`learnings-fct_orders.json`**: the three learnings from `skill/datahub-memory/SKILL.md`'s
+- **`learnings-fct_orders.json`**: the three learnings from `skill/datahub-learnings/SKILL.md`'s
   Worked Example A (`semantic_gotcha` on the `amount` column, `metric_definition` and
   `verified_query` on the table), as read back from DataHub's
   `io.datahub.agentMemory.learnings` structured property after writing them via
@@ -18,7 +18,7 @@ time so judges can inspect the output without running the demo themselves.
   read back after the retain workflow's doc-block step, byte-for-byte. This is what a
   human sees in the DataHub UI's Documentation tab, the same content as the JSON
   above, rendered by the skill into the fixed markdown template
-  (`skill/datahub-memory/templates/doc-block.template.md`) and spliced between the
+  (`skill/datahub-learnings/templates/doc-block.template.md`) and spliced between the
   `<!-- agent-memory:begin/end -->` markers.
 - **`learnings-fct_orders.json`**'s field-level entry (the `semantic_gotcha`) lives on
   the `amount` column's own structured property, not the dataset's. Per
@@ -31,7 +31,7 @@ time so judges can inspect the output without running the demo themselves.
 ## Provenance
 
 Written by `demo-seed/wave4` on 2026-07-29, using the exact retain workflow
-(`skill/datahub-memory/SKILL.md` Workflow 2, Steps 3–4: read-merge-write the
+(`skill/datahub-learnings/SKILL.md` Workflow 2, Steps 3–4: read-merge-write the
 structured property, then re-render and splice the doc block) via the DataHub MCP
 server (`uvx mcp-server-datahub@latest`, `TOOLS_IS_MUTATION_ENABLED=true`) called over
 stdio, the same tool surface `references/mcp-tools-reference.md` documents and the
@@ -46,7 +46,7 @@ path removes them cleanly (verified during the build) before re-running the demo
 
 - **`conflict-learnings-dim_customers.json`**: the two `io.datahub.agentMemory.learnings`
   records left on `dim_customers` by a full run of `protocol/SPEC.md` §8's conflict
-  procedure (`skill/datahub-memory/SKILL.md` Conflict Procedure): the original
+  procedure (`skill/datahub-learnings/SKILL.md` Conflict Procedure): the original
   `join_path` record (now `status: disputed`, `claim`/`evidence`/`confidence`
   untouched, exactly as §8 rule 1 requires) and the new `join_path` record that
   contradicts it (`status: conflict`, `conflicts_with` pointing at the disputed

@@ -14,7 +14,7 @@ Paste the following as the first message:
 
 I'm about to retrain our customer LTV model. Before I do, check
 `features_customer_ltv` and its upstream data for anything already known that
-could bite the model. Use the datahub-memory skill to recall, then summarize
+could bite the model. Use the datahub-learnings skill to recall, then summarize
 the risks.
 
 ---

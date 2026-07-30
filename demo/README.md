@@ -37,7 +37,7 @@ Run `uv run python setup/doctor.py` any time to check all of the below in one sh
 
 ## How the skill gets loaded
 
-The protocol and workflow live in `skill/datahub-memory/` (the repo-facing copy,
+The protocol and workflow live in `skill/datahub-learnings/` (the repo-facing copy,
 this is what gets proposed upstream to `datahub-project/datahub-skills`, and what
 `protocol/SPEC.md` and the rest of this repo point to). That path is **not** where
 Claude Code looks for skills automatically.
@@ -46,13 +46,13 @@ Claude Code auto-discovers project skills at **`.claude/skills/<skill-name>/SKIL
 relative to the repo root. Confirmed against the current Claude Code Skills
 documentation, no other mechanism (no `settings.json` key for an arbitrary skills
 directory, no plugin/marketplace install) makes an arbitrary path auto-load. So this
-repo carries a second copy: **`.claude/skills/datahub-memory/`**, byte-identical to
-`skill/datahub-memory/` at the time it was copied. Any fresh Claude Code session
+repo carries a second copy: **`.claude/skills/datahub-learnings/`**, byte-identical to
+`skill/datahub-learnings/` at the time it was copied. Any fresh Claude Code session
 opened in this repo picks it up with no extra step.
 
-**Consequence for anyone editing the skill**: `skill/datahub-memory/` is the source of
+**Consequence for anyone editing the skill**: `skill/datahub-learnings/` is the source of
 truth (and the thing under review for the upstream PR); if you change it, re-copy it
-into `.claude/skills/datahub-memory/` or the running demo will use a stale copy. There
+into `.claude/skills/datahub-learnings/` or the running demo will use a stale copy. There
 is no symlink here. Windows symlinks need elevated privileges/dev mode, and a plain
 copy is simpler for judges to reason about.
 
@@ -64,7 +64,7 @@ copy is simpler for judges to reason about.
 2. **Agent A session**: open a fresh Claude Code session at the repo root, paste the
    prompt from `demo/prompts/agent_a.md`. Watch it: search DataHub for the right
    table, query Postgres directly, get a suspiciously large naive number, investigate,
-   land on the correct $38.6M figure, then invoke the datahub-memory skill's retain
+   land on the correct $38.6M figure, then invoke the datahub-learnings skill's retain
    workflow to write 3 learnings back to `fct_orders`.
 3. **Show DataHub UI**: open `http://localhost:9002` (login `datahub`/`datahub`),
    navigate to `fct_orders`, show the `io.datahub.agentMemory.learnings` structured
@@ -136,7 +136,7 @@ like any other state.
   was set in `setup/ingest_postgres.yml`, or ran against a stale seed. Re-run
   `setup/seed_warehouse.py` then `setup/ingest_postgres.yml`'s ingestion command.
 - **Skill doesn't trigger / Claude Code doesn't seem to know about it.** Confirm
-  `.claude/skills/datahub-memory/SKILL.md` exists (not just `skill/datahub-memory/`)
+  `.claude/skills/datahub-learnings/SKILL.md` exists (not just `skill/datahub-learnings/`)
   and the session was opened fresh after it was added. See "How the skill gets
   loaded" above.
 - **DataHub UI shows the property as unrecognized / writes fail with an unknown

@@ -19,6 +19,6 @@ Finance mentioned June was roughly **$38.6M**, so sanity-check your answer again
 that before you give it to me. If you're way off, figure out why rather than just
 reporting whatever the first query gives you.
 
-Once you're confident in the answer, use the datahub-memory skill to retain
+Once you're confident in the answer, use the datahub-learnings skill to retain
 whatever you learned along the way so the next person who has to do this doesn't
 have to rediscover it.

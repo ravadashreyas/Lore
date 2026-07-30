@@ -35,7 +35,7 @@ that question.
 The with-memory condition uses `clients/recall.py`, the stdlib-only client
 described in the root README as an independent implementation of the recall
 half of the protocol, talking straight to DataHub's GraphQL endpoint. It
-does not use the interactive `datahub-memory` skill (the one driven through
+does not use the interactive `datahub-learnings` skill (the one driven through
 the DataHub MCP server, used in the three-act `demo/`) or its automatic
 per-prompt triggering.
 

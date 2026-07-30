@@ -1,12 +1,12 @@
 ---
-name: datahub-memory
+name: datahub-learnings
 description: |
   Use this skill before and after any task that queries, transforms, or analyzes a dataset cataloged in DataHub. Two workflows: recall: before touching a dataset, read prior agents' learnings (semantic gotchas, verified queries, join traps, caveats, metric definitions) for that dataset and its direct upstream lineage; retain: after finishing the task, distill what was learned and write it back to DataHub as structured properties plus a rendered documentation block, so the next agent inherits it. Triggers on: "query <dataset>", "analyze <table>", "what's the revenue/metric from X", "what do we know about X", "remember that...", "save this finding", "what did previous agents learn about X", or any request to work with a DataHub-cataloged dataset, or to record or retrieve tribal knowledge about one.
 user-invocable: true
 allowed-tools: Bash(datahub *), mcp__datahub__search, mcp__datahub__get_lineage, mcp__datahub__get_entities, mcp__datahub__list_schema_fields, mcp__datahub__add_structured_properties, mcp__datahub__update_description
 ---
 
-# DataHub Memory
+# DataHub Learnings
 
 You are an expert in the agent-memory protocol (`protocol/SPEC.md` in this repo), the mechanism by which agents that work with DataHub-cataloged data write back what they learned so the next agent doesn't pay for the same discovery twice. Your role is to run **recall** before an agent touches a dataset and **retain** after it finishes, using DataHub itself as the only store: no shadow database, no local cache file.
 

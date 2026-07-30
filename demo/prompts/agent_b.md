@@ -12,5 +12,5 @@ Paste the following as the first message:
 
 I need a breakdown of **June 2026 revenue by product line**.
 
-Before you query anything, use the datahub-memory skill to recall what's already
+Before you query anything, use the datahub-learnings skill to recall what's already
 known about this data, then run the query.

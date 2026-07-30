@@ -19,9 +19,9 @@ Give agents shared long-term memory over the DataHub metadata graph: recall what
 ## Usage
 
 ```
-/datahub-memory recall fct_orders before I query it
-/datahub-memory what do we know about dim_customers?
-/datahub-memory retain what I just learned about the June revenue query
+/datahub-learnings recall fct_orders before I query it
+/datahub-learnings what do we know about dim_customers?
+/datahub-learnings retain what I just learned about the June revenue query
 ```
 
 Most of the time this skill runs implicitly: recall before the first query against a dataset in a session, retain after the task is done. See `SKILL.md`.
