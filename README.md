@@ -126,6 +126,18 @@ The full two-agent walkthrough is in [`demo/README.md`](demo/README.md):
 
 SPEC.md §9 admits the protocol "does not (and in v1 cannot) technically force an agent to perform [recall] before acting." [`hooks/enforce_recall.py`](hooks/enforce_recall.py) closes that gap for Claude Code specifically: a `PreToolUse` hook that blocks a Bash command touching a cataloged table once, feeds back any unsurfaced learnings on that table (and its upstream lineage) as the block reason, then lets the retry through, turning recall from a skill-level convention into something the shell itself enforces. See [`hooks/README.md`](hooks/README.md) for the mechanism, the exact `.claude/settings.json` wiring, and its fail-open guarantees.
 
+## Governance of the memory itself
+
+Two questions follow naturally from letting agents write claims into a shared catalog: what stops the catalog from filling with garbage, and what happens once a learning goes stale. Garbage control has two layers. SPEC.md §7's retain checklist (no secrets, no restated schema, dedupe first, honest confidence, never overwrite on contradiction, about the data and not the task) is enforced socially, by the skill's own judgment before a write happens. [`tools/lint_learnings.py`](tools/lint_learnings.py) enforces the checkable parts of that same checklist mechanically, after the fact: it sweeps every learning already in the catalog and validates it against SPEC.md's own rules for required fields, the kind/confidence/status enums, id and date shape, length caps, the conflict-record contract, and two heuristics for evidence concreteness and secret/PII shape (documented as heuristics in the tool's own header, not proofs), then exits nonzero on any violation, which makes it a plain CI gate. It was run against the live instance clean, the 3 real `fct_orders` learnings pass with zero violations, then against a scratch dataset seeded with 4 deliberately bad learnings (a missing required field, an oversized claim, a conflict record pointing at a nonexistent disputed learning, and an email address in evidence), all 4 caught, then the scratch dataset was soft-deleted and the live sweep confirmed clean again.
+
+Staleness is handled differently, on purpose. SPEC.md §9 rules out an automated TTL: nothing ages a learning out, because deleting knowledge silently is worse than flagging it as possibly wrong. Staleness still surfaces two ways: through the conflict mechanism (§8) when a new observation actually contradicts an old one, which is the protocol's only built-in signal that something changed, and now through [`tools/lore_stats.py --stale-days N`](tools/lore_stats.py) (default 90), which lists learnings older than N days as review candidates. That flag is explicitly reporting, not policy: it never deletes, disputes, or downgrades anything, it just queues old claims for a human to look at.
+
+Scale is a quieter risk than either: not wrong learnings, just too many of them. SPEC.md §4's length caps on `claim` (280 characters) and `evidence` (500 characters), enforced by the linter, push a writer toward one sharp fact instead of a paragraph. Column-level scoping (`subject_field`) keeps a learning attached to the specific thing it describes instead of an entire table. `lore_stats.py` adds a per-entity noise warning for anything carrying more than 20 learnings, so a pile-up gets noticed before it becomes unreadable, not after. Together these keep the memory dense rather than sprawling.
+
+## Measured behavior (mini eval)
+
+We ran a 12-arm evaluation: six analyst questions with pre-computed ground truths, each answered by two fresh agent sessions, one with no memory and one instructed to run recall first ([`eval/`](eval/README.md), full per-arm results in [`eval/RESULTS.md`](eval/RESULTS.md)). Both conditions were accurate on this small, deliberately hint-rich warehouse (no memory 6/6, with memory 5/6). The measured difference is cost and consistency: with-memory arms used **62% fewer queries** (16 vs 42 total), answered the two metric-definition questions correctly in a single query each, and never re-derived a known trap; no-memory arms independently re-discovered the cents landmine on all six questions, paying for it every time. The one failure is reported in full: a with-memory arm merged two customers who share a name, a trap no learning covered, while the no-memory arm on the same question found it by profiling. The honest conclusion, stated in `RESULTS.md`: recalled knowledge was applied correctly every time it existed, and it does not substitute for profiling on questions outside the memory's coverage; the fix for that gap is the retain loop itself.
+
 ## Repo layout
 
 ```
@@ -157,12 +169,16 @@ clients/                      independent implementation, written from the spec 
 hooks/                        closes SPEC.md §9's "no enforced recall" gap for Claude Code
   enforce_recall.py           PreToolUse hook: blocks Bash once with unsurfaced learnings, then allows the retry
 
+tools/                        governance tooling for the memory itself, stdlib-only, run against the live instance
+  lint_learnings.py           pass/fail linter: validates every learning against SPEC.md's own rules, CI-ready
+  lore_stats.py               knowledge-accumulation report: totals, breakdowns, open conflicts, staleness, noise
+
 examples/                     real captured output, no run required to inspect it
   learnings-fct_orders.json   the 3 learnings, read back from DataHub's structured property
   doc-block-fct_orders.md     the rendered documentation block, read back byte-for-byte
   conflict-*.md / *.json      the section-8 conflict procedure, executed via a real migration
 
-protocol/, skill/, setup/, demo/, examples/, clients/, hooks/ are all referenced above.
+protocol/, skill/, setup/, demo/, examples/, clients/, hooks/, tools/ are all referenced above.
 ```
 
 ## The demo scenario is constructed
