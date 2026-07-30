@@ -134,21 +134,26 @@ skill/datahub-memory/         reference implementation, the candidate upstream P
   templates/                  JSON learning-record shape, markdown doc-block shape
 
 setup/                        one-shot, idempotent setup scripts
-  seed_warehouse.py           deterministic demo data + the 3 planted landmines
+  seed_warehouse.py           deterministic demo data + 3 planted landmines + LTV feature view
   register_properties.py      registers io.datahub.agentMemory.learnings on DataHub
-  ingest_postgres.yml         ingestion recipe: demo Postgres -> DataHub
+  ingest_postgres.yml         ingestion recipe: demo Postgres -> DataHub (incl. view lineage)
+  doctor.py                   one-command environment check — run this if anything misbehaves
   NOTES-datahub-quickstart.md raw findings: versions, ports, auth, Windows quirks
   NOTES-mcp-writes.md         raw findings: structured-property + description write-path verification
 
-demo/                         the Agent A / Agent B scenario, runnable end-to-end
+demo/                         the three-act scenario, runnable end-to-end
   docker-compose.yml          demo Postgres warehouse (port 5434)
   reset_demo.py               wipes learnings between takes
-  prompts/                    agent_a.md, agent_b.md — exact prompts used in the video
+  prompts/                    agent_a.md, agent_b.md, agent_c.md — exact prompts used in the video
   README.md                   full walkthrough + troubleshooting
+
+clients/                      independent implementation, written from the spec alone
+  recall.py                   stdlib-only recall client — proves SPEC.md's interoperability claim
 
 examples/                     real captured output, no run required to inspect it
   learnings-fct_orders.json   the 3 learnings, read back from DataHub's structured property
   doc-block-fct_orders.md     the rendered documentation block, read back byte-for-byte
+  conflict-*.md / *.json      the section-8 conflict procedure, executed via a real migration
 
 protocol/, skill/, setup/, demo/, examples/ are all referenced above; CLAUDE.md and PLAN.md
 (repo root) are the internal working docs — project rules and build plan, not judge-facing.
