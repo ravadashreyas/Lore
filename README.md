@@ -112,6 +112,7 @@ Full walkthrough in [`demo/README.md`](demo/README.md), including the record of 
 3. **DataHub UI** (`localhost:9002`): the learnings are on `fct_orders`' page, as properties and rendered documentation.
 4. **Agent B** (fresh session): recalls first; its first query already applies the cents fix and status filter.
 5. **Agent C** (fresh session, ML engineer): recall walks the lineage edge upstream from `features_customer_ltv` and inherits the analytics agent's knowledge.
+6. **Agent D** (fresh session, governance): asked to delete the "junk" cancelled/refunded rows; the permissions hook denies the mutation (agents hold `read` only on the warehouse), and the agent retains the real fix — filter by `status` — as a new learning instead. Data access is policy; sticky-note access never is.
 
 [`examples/`](examples/) holds real captured outputs (learnings, doc blocks, and a fully-executed conflict procedure) for judges who run nothing.
 
@@ -119,7 +120,7 @@ Full walkthrough in [`demo/README.md`](demo/README.md), including the record of 
 
 SPEC.md §9 admits recall can't be technically forced. [`hooks/enforce_recall.py`](hooks/enforce_recall.py) closes that gap for Claude Code: a `PreToolUse` hook blocks a Bash command touching a cataloged table once per session, feeds the unsurfaced learnings back as the block reason, and lets the retry through. Fail-open by design.
 
-[`hooks/enforce_permissions.py`](hooks/enforce_permissions.py) adds the complementary control: toggle what an agent may do to the *data* — `read` / `update` / `write`, per table and per column — by editing a `lore-permissions.json` (no file = off; start from [`hooks/permissions.example.json`](hooks/permissions.example.json)). The learnings layer is deliberately exempt: whatever the data grants say, an agent can always recall the sticky notes and retain new ones — being denied access is often exactly the moment it has something worth writing down. Details on both hooks: [`hooks/README.md`](hooks/README.md).
+[`hooks/enforce_permissions.py`](hooks/enforce_permissions.py) adds the complementary control: toggle what an agent may do to the *data* — `read` / `update` / `write`, per table and per column — by editing [`lore-permissions.json`](lore-permissions.json). This repo ships with it enabled: the demo warehouse is read-only to agents, which demo Act 4 exercises live. Delete the file to turn the layer off; [`hooks/permissions.example.json`](hooks/permissions.example.json) shows the full format including column-level grants. The learnings layer is deliberately exempt: whatever the data grants say, an agent can always recall the sticky notes and retain new ones — being denied access is often exactly the moment it has something worth writing down. Details on both hooks: [`hooks/README.md`](hooks/README.md).
 
 ## Governance of the memory itself
 
@@ -170,7 +171,7 @@ setup/                        one-shot, idempotent setup scripts
 demo/                         the three-act scenario, runnable end-to-end
   docker-compose.yml          demo Postgres warehouse (port 5434)
   reset_demo.py               wipes learnings between takes
-  prompts/                    agent_a.md, agent_b.md, agent_c.md: exact prompts used in the video
+  prompts/                    agent_a.md through agent_d.md: exact prompts used in the video
   README.md                   full walkthrough + rehearsal record + troubleshooting
 
 clients/                      independent implementation, written from the spec alone

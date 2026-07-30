@@ -1,0 +1,9 @@
+{
+  "default": ["read"],
+  "tables": {
+    "fct_orders": { "allow": ["read"] },
+    "dim_customers": { "allow": ["read"] },
+    "dim_products": { "allow": ["read"] },
+    "features_customer_ltv": { "allow": ["read"] }
+  }
+}

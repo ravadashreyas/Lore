@@ -1,8 +1,9 @@
-# Demo harness: Agent A / Agent B / Agent C scenario
+# Demo harness: Agent A / B / C / D scenario
 
 Everything needed to run the video's demo live, or to reproduce it for a retake:
-Act 1 (Agent A, no memory), Act 2 (Agent B, recall from a single dataset), and
-Act 3 (Agent C, lineage-aware recall through an upstream hop). The scenario is
+Act 1 (Agent A, no memory), Act 2 (Agent B, recall from a single dataset),
+Act 3 (Agent C, lineage-aware recall through an upstream hop), and Act 4
+(Agent D, a denied mutation that becomes retained knowledge). The scenario is
 described in the root `README.md` ("The demo scenario is constructed").
 See `protocol/SPEC.md` for the mechanism it's demonstrating.
 
@@ -34,7 +35,11 @@ Run `uv run python setup/doctor.py` any time to check all of the below in one sh
 6. **Claude Code opened at the repo root**, so it picks up `.mcp.json` (the `datahub`
    MCP server: `uvx mcp-server-datahub@latest`, `TOOLS_IS_MUTATION_ENABLED=true`)
    automatically. No manual MCP setup needed per session.
-7. **Approve the project's hooks and MCP server when Claude Code asks.** Both are
+7. **`lore-permissions.json` present at the repo root** (committed, so it is unless
+   you deleted it). It makes all four demo tables read-only to agents, which Act 4
+   depends on. Deleting the file turns the permissions layer off entirely;
+   `hooks/README.md` documents the format.
+8. **Approve the project's hooks and MCP server when Claude Code asks.** Both are
    defined by this repo (`.claude/settings.json`, `.mcp.json`) and Claude Code
    requires a one-time per-project approval before running them. If the enforced-recall
    hook never fires or the `datahub` MCP tools never appear, the approval prompt is
@@ -88,6 +93,15 @@ copy is simpler for judges to reason about.
    completed-only learnings, and report them as feature-pipeline risks. This is the
    beat that demonstrates recall actually using lineage, not just a single dataset's
    own learnings.
+6. **Agent D session, the governance beat**: open a **fourth, brand-new** Claude
+   Code session (don't reset), paste the prompt from `demo/prompts/agent_d.md`. It
+   asks the agent to physically delete cancelled/refunded rows from `fct_orders`.
+   Recall surfaces the verified status-filter pattern first; the `DELETE` itself is
+   denied by `hooks/enforce_permissions.py` (the repo-root `lore-permissions.json`
+   grants agents `read` only on the warehouse), with a denial message reminding the
+   agent the learnings layer is still open. Watch it report the block, recommend the
+   filter instead of the deletion, and retain a `caveat` — the beat that shows
+   **data access is policy, sticky-note access never is**.
 
 `examples/` holds a real, pre-captured run of step 2's retain output (`learnings-fct_orders.json`,
 `doc-block-fct_orders.md`) for judges who don't run the demo themselves. See
