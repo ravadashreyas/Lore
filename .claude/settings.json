@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run python hooks/enforce_recall.py",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

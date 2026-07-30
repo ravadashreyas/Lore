@@ -122,6 +122,10 @@ The full two-agent walkthrough is in [`demo/README.md`](demo/README.md):
 
 [`examples/`](examples/) holds a real, pre-captured run of Agent A's retain output — `learnings-fct_orders.json` and `doc-block-fct_orders.md` — for judges who want to inspect the output without running the demo themselves.
 
+## Enforced recall (the hook)
+
+SPEC.md §9 admits the protocol "does not — and in v1 cannot — technically force an agent to perform [recall] before acting." [`hooks/enforce_recall.py`](hooks/enforce_recall.py) closes that gap for Claude Code specifically: a `PreToolUse` hook that blocks a Bash command touching a cataloged table once, feeds back any unsurfaced learnings on that table (and its upstream lineage) as the block reason, then lets the retry through — turning recall from a skill-level convention into something the shell itself enforces. See [`hooks/README.md`](hooks/README.md) for the mechanism, the exact `.claude/settings.json` wiring, and its fail-open guarantees.
+
 ## Repo layout
 
 ```
@@ -150,12 +154,15 @@ demo/                         the three-act scenario, runnable end-to-end
 clients/                      independent implementation, written from the spec alone
   recall.py                   stdlib-only recall client — proves SPEC.md's interoperability claim
 
+hooks/                        closes SPEC.md §9's "no enforced recall" gap for Claude Code
+  enforce_recall.py           PreToolUse hook: blocks Bash once with unsurfaced learnings, then allows the retry
+
 examples/                     real captured output, no run required to inspect it
   learnings-fct_orders.json   the 3 learnings, read back from DataHub's structured property
   doc-block-fct_orders.md     the rendered documentation block, read back byte-for-byte
   conflict-*.md / *.json      the section-8 conflict procedure, executed via a real migration
 
-protocol/, skill/, setup/, demo/, examples/, clients/ are all referenced above.
+protocol/, skill/, setup/, demo/, examples/, clients/, hooks/ are all referenced above.
 ```
 
 ## The demo scenario is constructed
