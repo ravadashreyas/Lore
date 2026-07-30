@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "description": "Read-back proof of the io.datahub.agentMemory.learnings structured property values written to the real fct_orders dataset urn and its amount schemaField urn, produced by executing the retain workflow (skill/datahub-memory/SKILL.md Workflow 2, Steps 3-4) exactly as specified: read-merge-write against a confirmed-empty starting state, one add_structured_properties call per entity, full value list each time.",
+    "produced_by": "demo-seed/wave4 (orchestrator agent, seeding this repo's examples/ deliverable, not one of the video's Agent A / Agent B personas)",
+    "produced_at": "2026-07-29",
+    "method": "DataHub MCP server (uvx mcp-server-datahub@latest, TOOLS_IS_MUTATION_ENABLED=true) called over stdio: add_structured_properties for each write, then raw GraphQL (entity { structuredProperties { properties { values } } }) for the readback shown below -- the same tool surface skill/datahub-memory/references/mcp-tools-reference.md documents.",
+    "each_value_below": "Shown parsed for readability. On the wire each is a single-line JSON string (json.dumps(..., separators=(',', ':'))) -- that raw string form is what DataHub actually stores as one structured-property value."
+  },
+  "fct_orders_dataset_urn": "urn:li:dataset:(urn:li:dataPlatform:postgres,demo_warehouse.ecommerce.fct_orders,PROD)",
+  "table_level_learnings": [
+    {
+      "id": "9c1d2e3f-5a6b-4c7d-8e9f-0a1b2c3d4e5f",
+      "kind": "metric_definition",
+      "subject_urn": "urn:li:dataset:(urn:li:dataPlatform:postgres,demo_warehouse.ecommerce.fct_orders,PROD)",
+      "claim": "'Revenue' = status='completed' orders only (excludes cancelled and refunded), amount/100, summed by order_date.",
+      "evidence": "Cross-checked against finance dashboard for 3 distinct months; all three matched within $1.",
+      "confidence": "high",
+      "learned_by": "demo-seed/wave4",
+      "learned_at": "2026-07-29"
+    },
+    {
+      "id": "b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e",
+      "kind": "verified_query",
+      "subject_urn": "urn:li:dataset:(urn:li:dataPlatform:postgres,demo_warehouse.ecommerce.fct_orders,PROD)",
+      "claim": "Monthly revenue: SELECT SUM(amount)/100.0 FROM fct_orders WHERE status='completed' AND date_trunc('month', order_date)=:month",
+      "evidence": "June 2026 result ($38,604,332.17) matched finance dashboard export to the cent.",
+      "confidence": "high",
+      "learned_by": "demo-seed/wave4",
+      "learned_at": "2026-07-29"
+    }
+  ],
+  "fct_orders_amount_field_urn": "urn:li:schemaField:(urn:li:dataset:(urn:li:dataPlatform:postgres,demo_warehouse.ecommerce.fct_orders,PROD),amount)",
+  "field_level_learnings": [
+    {
+      "id": "3f9a2b1c-4d5e-4f60-8a11-9b2c3d4e5f60",
+      "kind": "semantic_gotcha",
+      "subject_urn": "urn:li:dataset:(urn:li:dataPlatform:postgres,demo_warehouse.ecommerce.fct_orders,PROD)",
+      "subject_field": "amount",
+      "claim": "Values are stored in cents, not dollars; divide by 100 for a dollar amount.",
+      "evidence": "SUM(amount) for completed June 2026 orders = 3,860,433,217 vs. finance dashboard $38,604,332; ratio exactly 100.",
+      "confidence": "high",
+      "learned_by": "demo-seed/wave4",
+      "learned_at": "2026-07-29"
+    }
+  ]
+}
