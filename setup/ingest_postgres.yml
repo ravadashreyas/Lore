@@ -1,0 +1,34 @@
+# Ingests the demo warehouse (Postgres, ecommerce schema) into local DataHub.
+#
+# Prereqs: DataHub quickstart running (GMS at localhost:8080), demo Postgres
+# container up on host port 5434 (see setup/seed_warehouse.py).
+#
+# Run with:
+#   uvx --from "acryl-datahub[postgres]==1.6.0.16" datahub ingest -c setup/ingest_postgres.yml
+#
+# Password below is the throwaway local demo credential ("demo"/"demo") for a
+# disposable Docker Postgres instance — not a real secret, fine inline here.
+source:
+  type: postgres
+  config:
+    host_port: localhost:5434
+    database: demo_warehouse
+    username: demo
+    password: demo
+    schema_pattern:
+      allow:
+        - "ecommerce"
+    include_tables: true
+    include_views: true
+    # include_view_lineage defaults to true in this connector version (1.6.0.16)
+    # and populates table->view lineage via DataHub's SQL parser -- no extra
+    # config needed to get features_customer_ltv -> fct_orders/dim_customers
+    # lineage edges out of ingestion.
+    # Profiling skipped: turning it on requires stats queries per table/column
+    # (min/max/null-count/distinct) which is more than a one-line flag's worth
+    # of runtime for no benefit to this project's demo (no dashboards read it).
+
+sink:
+  type: datahub-rest
+  config:
+    server: http://localhost:8080
