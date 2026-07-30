@@ -7,7 +7,7 @@
 #   uvx --from "acryl-datahub[postgres]==1.6.0.16" datahub ingest -c setup/ingest_postgres.yml
 #
 # Password below is the throwaway local demo credential ("demo"/"demo") for a
-# disposable Docker Postgres instance — not a real secret, fine inline here.
+# disposable Docker Postgres instance: not a real secret, fine inline here.
 source:
   type: postgres
   config:

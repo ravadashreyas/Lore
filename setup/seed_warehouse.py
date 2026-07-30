@@ -11,7 +11,7 @@ Also creates `ecommerce.features_customer_ltv`, a genuine SQL view over
 fct_orders + dim_customers (the classic LTV feature set: completed-order
 revenue, order count, first/last order dates per customer). It exists so the
 lineage-aware recall demo beat (Act 3, demo/README.md) has a real downstream
-consumer of fct_orders to recall through — the view correctly applies the
+consumer of fct_orders to recall through. The view correctly applies the
 cents-division and completed-only landmines itself, so recalling fct_orders'
 learnings from it confirms the view is built right rather than exposing a bug.
 

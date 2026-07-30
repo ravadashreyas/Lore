@@ -1,6 +1,6 @@
 # Demo warehouse: throwaway local Postgres for the DataHub Agent Memory demo.
 # Host port 5433 is taken by an unrelated container on this dev machine, and
-# DataHub quickstart may also claim 5432 — use 5434 to avoid both.
+# DataHub quickstart may also claim 5432, so use 5434 to avoid both.
 services:
   postgres:
     image: postgres:16

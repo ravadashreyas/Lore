@@ -6,24 +6,24 @@ read to write it.
 
 ## What this proves
 
-The protocol spec claims that "an independent implementation — a different skill, a
-different agent framework, a different language — can read and write compatible
+The protocol spec claims that "an independent implementation (a different skill, a
+different agent framework, a different language) can read and write compatible
 learnings against a DataHub instance without reference to any other file in this
 repo." This client is that proof for the read side: every design decision in
-`recall.py` — the structured-property id (`io.datahub.agentMemory.learnings`), the
+`recall.py`, from the structured-property id (`io.datahub.agentMemory.learnings`), the
 learning record's JSON shape (SPEC §4), the recall scope (table + schemaField, one
 lineage hop upstream, SPEC §6), skip-and-warn parsing of malformed entries (SPEC §6),
-and surfacing `disputed`/`conflict` status instead of silently picking a side (SPEC
-§8) — is traceable to a specific section of `SPEC.md`. The exact GraphQL shapes
+to surfacing `disputed`/`conflict` status instead of silently picking a side (SPEC
+§8), is traceable to a specific section of `SPEC.md`. The exact GraphQL shapes
 (`entity(urn)`, `... on Dataset { structuredProperties }`, `... on SchemaFieldEntity`,
 `searchAcrossLineage`) were derived from public DataHub GraphQL API knowledge and
-confirmed by introspecting the live GMS — not from reading the skill's implementation.
+confirmed by introspecting the live GMS, not from reading the skill's implementation.
 
 ## What this deliberately doesn't do
 
-- **No write path (retain).** SPEC §7's retain workflow — distilling and writing new
+- **No write path (retain).** SPEC §7's retain workflow (distilling and writing new
   learnings, the dedupe check, the read-merge-write semantics for structured
-  properties — is out of scope. This client is read-only by design, to keep the proof
+  properties) is out of scope. This client is read-only by design, to keep the proof
   minimal and because the task requires no writes to DataHub.
 - **No documentation-block rendering** (SPEC §5.2). Only the structured-property
   values are read; the human-readable markdown block on the entity description is not
@@ -73,13 +73,13 @@ $ python clients/recall.py 'urn:li:dataset:(urn:li:dataPlatform:postgres,demo_wa
 `features_customer_ltv` itself has no learnings yet, but `--upstream` correctly walks
 one lineage hop and recalls `fct_orders`' two table-level learnings plus its
 column-scoped `amount` learning (fetched via the `SchemaFieldEntity` GraphQL path,
-SPEC §6's implementation note) — exactly the scenario SPEC §6 describes: an agent
+SPEC §6's implementation note), exactly the scenario SPEC §6 describes: an agent
 about to query `features_customer_ltv` inherits the unit-conversion gotcha from its
 upstream source table without re-deriving it. `dim_customers` is also one hop
 upstream of `features_customer_ltv` and is included automatically by the lineage
 query; its learning count fluctuated between test runs (2 disputed/conflict
 learnings in one run, 0 in another) because another agent was concurrently writing
-to it during this test — expected, and out of scope for this client's own testing.
+to it during this test (expected, and out of scope for this client's own testing).
 
 Plain dataset-level + column-scoped recall, no lineage walk:
 
@@ -105,7 +105,7 @@ $ python clients/recall.py 'urn:li:dataset:(urn:li:dataPlatform:postgres,demo_wa
 
 An earlier test run against `dim_customers` (encountered only as an upstream entity,
 not as a primary test target) happened to catch it mid-conflict, which is a good
-illustration of SPEC §8 in action — both sides of a contradiction rendered, neither
+illustration of SPEC §8 in action, both sides of a contradiction rendered, neither
 silently preferred:
 
 ```

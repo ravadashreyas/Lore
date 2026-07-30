@@ -20,9 +20,9 @@ definitions: `protocol/SPEC.md` §4, condensed in `../references/protocol-refere
 }
 ```
 
-## Checklist before writing (SPEC.md §7 — see SKILL.md Workflow 2 Step 2 for the full walkthrough)
+## Checklist before writing (SPEC.md §7, see SKILL.md Workflow 2 Step 2 for the full walkthrough)
 
-- [ ] (a) No secrets, no row-level/PII data — evidence is aggregate only
+- [ ] (a) No secrets, no row-level/PII data: evidence is aggregate only
 - [ ] (b) Not something already obvious from the schema or existing docs
 - [ ] (c) Recall re-run against this subject; not a duplicate of an existing active learning
 - [ ] (d) `confidence` matches the SPEC.md §4 definition exactly; `evidence` is re-runnable
