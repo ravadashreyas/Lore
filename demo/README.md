@@ -7,6 +7,8 @@ See `protocol/SPEC.md` for the mechanism it's demonstrating.
 
 ## Prerequisites
 
+Run `uv run python setup/doctor.py` any time to check all of the below in one shot, with a fix for whatever fails.
+
 1. **DataHub OSS quickstart running** (`docker ps` should show
    `datahub-datahub-gms-quickstart-1` and `datahub-frontend-quickstart-1` healthy).
    Bring it up with `datahub docker quickstart` if it isn't. UI: `http://localhost:9002`
