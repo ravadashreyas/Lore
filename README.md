@@ -70,6 +70,11 @@ Every claim checked against a live DataHub OSS `v1.5.0.6` quickstart. Full write
 
 Tested on Windows 11, DataHub OSS `v1.5.0.6`, CLI `1.6.0.16`, `uv` `0.11.32`. Prerequisites: Docker Desktop, [`uv`](https://docs.astral.sh/uv/), Claude Code.
 
+One command runs everything below: `uv run python setup/bootstrap.py`. It is idempotent
+(safe to re-run; already-satisfied steps are skipped) and ends by running the doctor for
+you. The numbered steps are the manual path, useful as a reference or if a step needs
+troubleshooting on its own.
+
 > **Windows gotchas**
 > - `datahub docker quickstart` can exit 1 with a `UnicodeEncodeError` on a *successful* run (cp1252 vs its `✔` banner). Trust `docker ps` and the health URLs, not the exit code. `PYTHONIOENCODING=utf-8` avoids it.
 > - `uv`/`uvx` may need a shell restart to be on `PATH` after install.
@@ -152,6 +157,7 @@ plugins/lore/                  installable Claude Code plugin: bundles the skill
   README.md                    what installing gets you, prerequisites, double-loading note, uninstall
 
 setup/                        one-shot, idempotent setup scripts
+  bootstrap.py                one command: runs steps below in order, skips what's already done
   seed_warehouse.py           deterministic demo data + 3 planted landmines + LTV feature view
   register_properties.py      registers io.datahub.agentMemory.learnings on DataHub
   ingest_postgres.yml         ingestion recipe: demo Postgres -> DataHub (incl. view lineage)
