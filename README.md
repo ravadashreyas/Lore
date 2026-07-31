@@ -142,13 +142,15 @@ An adjacent design surfaced in this same hackathon ([datahub-skills PR #69](http
 
 The layers are complementary: one caches investigations, the other makes every investigation start with the traps already known. Lore deliberately stores no task answers (retain rule (f)).
 
+Lore's upstream contributions from this project: the skill is proposed to the official registry as [datahub-skills PR #74](https://github.com/datahub-project/datahub-skills/pull/74), and the MCP server's schemaField read gap is reported and fixed in [issue #157](https://github.com/acryldata/mcp-server-datahub/issues/157) / [PR #158](https://github.com/acryldata/mcp-server-datahub/pull/158).
+
 ## Repo layout
 
 ```
 protocol/
   SPEC.md                     normative protocol spec: learning schema, recall/retain, conflicts
 
-skill/datahub-learnings/      reference implementation, the candidate upstream PR to datahub-skills
+skill/datahub-learnings/      reference implementation, proposed upstream as datahub-skills PR #74
   SKILL.md                    operational workflow: setup, recall, retain, worked examples
   references/                 condensed protocol reference + empirically-verified MCP tool calls
   templates/                  JSON learning-record shape, markdown doc-block shape
